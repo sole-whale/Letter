@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>情书 - 致炬灵</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'SimSun', 'STSong', serif;
+            background: linear-gradient(135deg, #fef9f0 0%, #f5e6d3 100%);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* 纸张纹理 */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                repeating-linear-gradient(0deg, transparent, transparent 35px, rgba(0,0,0,0.02) 35px, rgba(0,0,0,0.02) 36px);
+            pointer-events: none;
+        }
+
+        .paper {
+            background: #fffbf5;
+            width: 90%;
+            max-width: 800px;
+            padding: 60px 50px;
+            border-radius: 3px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+            position: relative;
+            transform-style: preserve-3d;
+        }
+
+        /* 信纸折痕 */
+        .paper::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 1px;
+            height: 100%;
+            background: rgba(0,0,0,0.05);
+        }
+
+        .paper::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+            width: 100%;
+            height: 1px;
+            background: rgba(0,0,0,0.05);
+        }
+
+        .letter {
+            opacity: 0;
+            animation: fadeInPaper 1.5s ease-out forwards;
+        }
+
+        @keyframes fadeInPaper {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .header {
+            text-align: left;
+            margin-bottom: 50px;
+            font-size: 1.3em;
+            color: #2c1810;
+            line-height: 2;
+            opacity: 0;
+            animation: fadeInDown 1s ease-out 0.5s forwards;
+        }
+
+        .columns-container {
+            display: flex;
+            justify-content: space-around;
+            gap: 30px;
+            margin: 60px 0;
+            min-height: 400px;
+        }
+
+        .column {
+            flex: 1;
+            text-align: center;
+            position: relative;
+        }
+
+        .vertical-text {
+            writing-mode: vertical-rl;
+            text-orientation: upright;
+            font-size: 1.6em;
+            letter-spacing: 0.3em;
+            color: #4a3428;
+            line-height: 2.5;
+            opacity: 0;
+            transform: translateY(50px);
+            animation: fadeInUp 1.2s ease-out forwards;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .column:nth-child(1) .vertical-text {
+            animation-delay: 1.5s;
+        }
+
+        .column:nth-child(2) .vertical-text {
+            animation-delay: 2.5s;
+        }
+
+        .column:nth-child(3) .vertical-text {
+            animation-delay: 3.5s;
+        }
+
+        .footer {
+            text-align: right;
+            margin-top: 60px;
+            font-size: 1.2em;
+            color: #2c1810;
+            opacity: 0;
+            animation: fadeIn 1.5s ease-out 4.5s forwards;
+        }
+
+        .signature {
+            margin-top: 15px;
+            font-size: 1.3em;
+            color: #4a3428;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* 装饰性印章 */
+        .seal {
+            position: absolute;
+            bottom: 30px;
+            left: 30px;
+            width: 80px;
+            height: 80px;
+            border: 3px solid #c8161d;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #c8161d;
+            font-size: 1.5em;
+            font-weight: bold;
+            opacity: 0;
+            animation: sealStamp 0.5s ease-out 5.5s forwards;
+            transform: rotate(-15deg);
+        }
+
+        @keyframes sealStamp {
+            0% {
+                opacity: 0;
+                transform: scale(3) rotate(-15deg);
+            }
+            60% {
+                opacity: 1;
+                transform: scale(0.9) rotate(-15deg);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) rotate(-15deg);
+            }
+        }
+
+        /* 飘落的花瓣 */
+        .petal {
+            position: fixed;
+            font-size: 20px;
+            pointer-events: none;
+            opacity: 0.6;
+            animation: fall linear forwards;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+            }
+        }
+
+        .date {
+            font-size: 0.95em;
+            color: #6a5448;
+            margin-top: 10px;
+        }
+
+        /* 墨迹装饰 */
+        .ink-mark {
+            position: absolute;
+            width: 120px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, rgba(0,0,0,0.2), transparent);
+            top: 120px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+    </style>
+</head>
+<body>
+    <div class="paper">
+        <div class="ink-mark"></div>
+        <div class="letter">
+            <div class="header">
+                <p>吾爱炬灵，见信如面！</p>
+            </div>
+
+            <div class="columns-container">
+                <div class="column">
+                    <div class="vertical-text">山水相隔，心有所念</div>
+                </div>
+                <div class="column">
+                    <div class="vertical-text">身若比邻，切要平安</div>
+                </div>
+                <div class="column">
+                    <div class="vertical-text">静待相逢，诉说想念</div>
+                </div>
+            </div>
+
+            <div class="footer">
+                <div class="date">二〇二六年五月二十日</div>
+                <div class="signature">挚爱呈上</div>
+            </div>
+        </div>
+
+        <div class="seal">情</div>
+    </div>
+
+    <script>
+        // 创建飘落的花瓣
+        function createPetal() {
+            const petal = document.createElement('div');
+            petal.className = 'petal';
+            const petals = ['🌸', '🌺', '🌹'];
+            petal.innerHTML = petals[Math.floor(Math.random() * petals.length)];
+            petal.style.left = Math.random() * 100 + 'vw';
+            petal.style.top = '-30px';
+            petal.style.animationDuration = (Math.random() * 3 + 5) + 's';
+            petal.style.transform = `rotate(${Math.random() * 360}deg)`;
+            document.body.appendChild(petal);
+
+            setTimeout(() => petal.remove(), 8000);
+        }
+
+        // 延迟开始飘落花瓣
+        setTimeout(() => {
+            for (let i = 0; i < 5; i++) {
+                setTimeout(createPetal, i * 500);
+            }
+            setInterval(createPetal, 2000);
+        }, 4000);
+
+        // 添加微妙的纸张抖动效果
+        const paper = document.querySelector('.paper');
+        let time = 0;
+        function subtleFloat() {
+            time += 0.02;
+            const y = Math.sin(time) * 2;
+            paper.style.transform = `translateY(${y}px)`;
+            requestAnimationFrame(subtleFloat);
+        }
+        subtleFloat();
+    </script>
+</body>
+</html>
